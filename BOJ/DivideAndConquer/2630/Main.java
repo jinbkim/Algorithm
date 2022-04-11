@@ -1,49 +1,50 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    static int count[] = new int[3];
     static int map[][];
+    static int count[] = new int[2];
 
     static void cutPaper(int x, int y, int size) {
-        if (size == 1) {
-            count[map[y][x]+1]++;
+        if(size == 0)
             return ;
-        }
-
-        int num = map[y][x];
+        
+        int paper = map[y][x];
         for(int i=y; i<y+size; i++) {
             for(int j=x; j<x+size; j++) {
-                if (num != map[i][j]) {
-                    size/=3;
-                    for(int k=y; k<y+3*size; k+=size)
-                        for(int l=x; l<x+3*size; l+=size)
-                            cutPaper(l, k, size);
+                if(paper != map[i][j]) {
+                    size /= 2;
+                    cutPaper(x, y, size);
+                    cutPaper(x+size, y, size);
+                    cutPaper(x, y+size, size);
+                    cutPaper(x+size, y+size, size);
                     return ;
                 }
             }
         }
-        count[num+1]++;
+
+        count[paper]++;
     }
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String args[]) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
+        map = new int[n][n];
         StringTokenizer st;
 
-        map = new int[n][n];
         for(int i=0; i<n; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int j=0; j<n; j++)
+            for(int j=0; j<n; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
+            }
         }
 
         cutPaper(0, 0, n);
-        for(int i=0; i<3; i++)
-            System.out.println(count[i]);
+        System.out.println(count[0]);
+        System.out.println(count[1]);
+
     }
 }
