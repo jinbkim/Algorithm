@@ -11,14 +11,13 @@ public class Main {
     static int n, m;
 
     static boolean isPossible(int h) {
-        int sum = 0;
+        long sum = 0;
 
         for(int i=0; i<n; i++) {
             if (trees[i]-h > 0)
                 sum += (trees[i]-h);
         }
-        // System.out.println("h : " + h + ", sum : " + sum);
-        if (sum >= m)
+        if (sum >= (long)m)
             return true;
         return false;
     }
@@ -36,8 +35,8 @@ public class Main {
         }
         else
             binarySearch(start, mid-1);
-
     }
+    
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
