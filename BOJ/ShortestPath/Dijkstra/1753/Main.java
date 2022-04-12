@@ -7,72 +7,72 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-class Edge implements Comparable<Edge> {
-    int end;
+class Edge implements Comparable<Edge>{
+    int destination;
     int weight;
 
-    public Edge(int end, int weight) {
-        this.end = end;
+    public Edge(int destination, int weight) {
+        this.destination = destination;
         this.weight = weight;
     }
 
     @Override
-    public int compareTo(Edge Edge) {
-        return (this.weight-Edge.weight);
+    public int compareTo(Edge edge) {
+        return (this.weight-edge.weight);
     }
 }
 
 public class Main {
 
     static int v, e, k;
-    static List<Edge>[] pathLists;
+    static List<Edge>[] edgeLists;
+    static int INF = 987654321;
     static int shortestPath[];
-    static final int INF = 987654321;
 
     static void getShortestPath(int start) {
-        PriorityQueue<Edge> pq = new PriorityQueue<Edge>();
+        PriorityQueue<Edge> pq = new PriorityQueue<>();
         shortestPath[start] = 0;
 
         pq.add(new Edge(start, 0));
         while (pq.isEmpty() == false) {
-            Edge currentEdge = pq.poll();
-            if (shortestPath[currentEdge.end] < currentEdge.weight)
-                continue;
-            
-            for(int i=0; i<pathLists[currentEdge.end].size(); i++) {
-                Edge nextEdge = pathLists[currentEdge.end].get(i);
+            Edge currentNode = pq.poll();
+            if (shortestPath[currentNode.destination] < currentNode.weight)
+                continue ;
 
-                if (currentEdge.weight+nextEdge.weight < shortestPath[nextEdge.end]) {
-                    shortestPath[nextEdge.end] = currentEdge.weight+nextEdge.weight;
-                    pq.add(new Edge(nextEdge.end, shortestPath[nextEdge.end]));
+            for(int i=0; i<edgeLists[currentNode.destination].size(); i++) {
+                Edge nextNode = edgeLists[currentNode.destination].get(i);
+                
+                if (currentNode.weight+nextNode.weight < shortestPath[nextNode.destination]) {
+                    shortestPath[nextNode.destination] = currentNode.weight+nextNode.weight;
+                    pq.add(new Edge(nextNode.destination, shortestPath[nextNode.destination]));
                 }
             }
         }
     }
-
-    public static void main(String[] args) throws IOException{
+    
+    public static void main(String args[]) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         v = Integer.parseInt(st.nextToken());
         e = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(br.readLine());
-
-        pathLists = new ArrayList[v+1];
+    
+        edgeLists = new ArrayList[v+1];
         for(int i=1; i<=v; i++)
-            pathLists[i] = new ArrayList<Edge>();
+            edgeLists[i] = new ArrayList<>();
         
         for(int i=0; i<e; i++) {
             st = new StringTokenizer(br.readLine());
-            int startEdge = Integer.parseInt(st.nextToken());
-            int endEdge = Integer.parseInt(st.nextToken());
+            int source = Integer.parseInt(st.nextToken());
+            int destination = Integer.parseInt(st.nextToken());
             int weight = Integer.parseInt(st.nextToken());
-            pathLists[startEdge].add(new Edge(endEdge, weight));
+            edgeLists[source].add(new Edge(destination, weight));
         }
 
         shortestPath = new int[v+1];
         Arrays.fill(shortestPath, INF);
-
         getShortestPath(k);
+
         for(int i=1; i<=v; i++) {
             if (shortestPath[i] == INF)
                 System.out.println("INF");
