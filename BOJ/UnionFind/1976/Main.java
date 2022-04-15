@@ -42,6 +42,9 @@ public class Main {
         
         StringTokenizer st;
         parent = new int[n+1];
+        for(int i=1; i<=n; i++)
+            parent[i] = i;
+
         for(int i=1; i<=n; i++) {
             st = new StringTokenizer(br.readLine());
             for(int j=1; j<=n; j++) {
