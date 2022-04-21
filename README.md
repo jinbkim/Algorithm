@@ -59,3 +59,7 @@
 #
 ## Prefix Sum
 - 나열된 수의 누적된 합을 구하는 방법
+
+#
+## Sieve Of Eratosthenes
+- 대량의 소수들을 구하는 방법
